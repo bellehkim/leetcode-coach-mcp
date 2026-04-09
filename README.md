@@ -11,7 +11,7 @@ The MVP focuses on one strong workflow: take a problem description, classify the
 - Thin MCP tool wrappers over a modular service layer
 - Local `run.py` flow for testing before MCP integration
 - Namespace-package layout under `src/` with no required `__init__.py` files
-- Architecture that leaves room for future Claude skills usage
+- Architecture that leaves room for future skills usage
 
 ## Architecture
 
@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 ```env
 ANTHROPIC_API_KEY=your_anthropic_api_key
-CLAUDE_MODEL=claude-3-5-sonnet-20241022
+CLAUDE_MODEL=claude-haiku-4-5-20251001
 MCP_SERVER_NAME=leetcode-coach-mcp
 ```
 
@@ -96,7 +96,8 @@ Start the MCP server over stdio:
 
 ```json
 {
-  "coaching": {
+  "ok": true,
+  "result": {
     "problem_summary": "Find two array values whose sum equals the target and return their indices.",
     "recommended_patterns": ["Hash Map"],
     "pattern_reason": "You need fast complement lookup while scanning the array once.",
@@ -120,11 +121,7 @@ Start the MCP server over stdio:
       "Dropping duplicate handling when values repeat."
     ]
   },
-  "cleaned_problem": "Given an array of integers nums and a target, return indices of the two numbers that add up to target.",
-  "raw_response": {
-    "problem_summary": "Find two array values whose sum equals the target and return their indices.",
-    "recommended_patterns": ["Hash Map"]
-  }
+  "cleaned_problem": "Given an array of integers nums and a target, return indices of the two numbers that add up to target."
 }
 ```
 

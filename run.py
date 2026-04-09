@@ -37,7 +37,10 @@ def load_problem_text(args: argparse.Namespace) -> str:
 
 
 def exit_for_local_run_error(message: str, exc: Exception) -> None:
-	if "authentication_error" in message or "invalid x-api-key" in message:
+	if (
+		"authentication_error" in message
+		or "invalid x-api-key" in message
+	):
 		print(
 			"Claude authentication failed. Check ANTHROPIC_API_KEY in your .env file or shell environment, or run with --mock.",
 			file=sys.stderr,

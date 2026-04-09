@@ -11,6 +11,23 @@ from src.config import Settings, get_settings
 from src.services.llm.prompts import SYSTEM_PROMPT
 
 
+def _extract_json_text(raw_text: str) -> str:
+	text = raw_text.strip()
+	if text.startswith("```"):
+		lines = text.splitlines()
+		if lines and lines[0].startswith("```"):
+			lines = lines[1:]
+		if lines and lines[-1].strip() == "```":
+			lines = lines[:-1]
+		text = "\n".join(lines).strip()
+
+	start = text.find("{")
+	end = text.rfind("}")
+	if start != -1 and end != -1 and end >= start:
+		return text[start : end + 1]
+	return text
+
+
 class ClaudeClient:
 	def __init__(self, settings: Settings | None = None) -> None:
 		self.settings = settings or get_settings()
@@ -31,7 +48,8 @@ class ClaudeClient:
 		raw_text = "\n".join(text_parts).strip()
 		if not raw_text:
 			raise ValueError("Claude returned an empty response.")
+		json_text = _extract_json_text(raw_text)
 		try:
-			return json.loads(raw_text)
+			return json.loads(json_text)
 		except json.JSONDecodeError as exc:
 			raise ValueError(f"Claude returned invalid JSON: {raw_text}") from exc
